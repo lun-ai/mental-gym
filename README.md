@@ -17,14 +17,11 @@ Install the `AI-mental-gym` and `AI-mental-gym-checklist` skills from
 open this repo in Claude Code, and say which checklist item you are on. The
 skill coaches one item at a time without writing the solution for you.
 
-![How the gym works: one rep per checklist item](docs/diagrams/gym-loop.png)
+![One rep per checklist item](docs/diagrams/gym-loop.png)
 
-Each checklist item is one rep. The AI writes a concept brief, then the
-function signature and a gap-fill skeleton straight into `src/TOPIC/`. You fill
-every blank in your own editor. The AI re-reads the file, critiques it, and
-only once it is correct asks a depth question scoped to that item. The last
-item of a phase also triggers the phase's depth checkpoint from
-`CHECKLIST.md`. Then the item is checked off and the loop restarts.
+Each checklist item is one rep: the AI scaffolds a skeleton with hints, you
+fill the blanks, the AI critiques, then asks a depth question once it is
+correct. The last item of a phase also triggers that phase's depth checkpoint.
 
 To vendor a frozen copy of the skills into this repo instead, run
 `scripts/sync-skill.sh`.
