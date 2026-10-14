@@ -1,29 +1,47 @@
 #!/usr/bin/env bash
-# Install (or refresh) the mental gym skills into the user's global Claude Code
-# skills directory. Idempotent: safe to run on every session start.
+# Install (or refresh) the mental gym skills into this repo's local skills
+# directory, where any skills-aware agent can find them. Idempotent.
 #
-#   scripts/install-skills.sh            # installs into ~/.claude/skills
-#   SKILLS_DIR=/path scripts/install-skills.sh
+#   scripts/install-skills.sh
+#
+# Layout after running:
+#   .agents/skills/AI-mental-gym/            canonical copy (Codex, Gemini CLI,
+#   .agents/skills/AI-mental-gym-checklist/  and other Agent Skills clients)
+#   .claude/skills -> ../.agents/skills      symlink for Claude Code
+#   .gemini/skills -> ../.agents/skills      symlink for older Gemini CLI builds
 set -euo pipefail
 
-REPO="https://github.com/lun-ai/skills.git"
-DST="${SKILLS_DIR:-$HOME/.claude/skills}"
+REPO_URL="https://github.com/lun-ai/skills.git"
 SKILLS=(AI-mental-gym AI-mental-gym-checklist)
 
-# Already a clone of the skills repo: just pull.
-if [ -d "$DST/.git" ] && git -C "$DST" remote get-url origin 2>/dev/null | grep -q "lun-ai/skills"; then
-  git -C "$DST" pull -q --ff-only
-  echo "updated $DST from lun-ai/skills"
-  exit 0
-fi
+ROOT="$(cd "$(dirname "$0")/.." && pwd)"
+DST="$ROOT/.agents/skills"
 
 TMP="$(mktemp -d)"
 trap 'rm -rf "$TMP"' EXIT
-git clone -q --depth 1 "$REPO" "$TMP/skills"
+git clone -q --depth 1 "$REPO_URL" "$TMP/skills"
 
 mkdir -p "$DST"
 for skill in "${SKILLS[@]}"; do
   rm -rf "${DST:?}/$skill"
   cp -R "$TMP/skills/$skill" "$DST/$skill"
-  echo "installed $skill -> $DST/$skill"
+  echo "installed .agents/skills/$skill"
+done
+
+# Client-specific directories point at the canonical copy.
+for client in claude gemini; do
+  link="$ROOT/.$client/skills"
+  if [ -L "$link" ]; then
+    continue
+  elif [ -e "$link" ]; then
+    echo "note: $link exists and is not a symlink; copying skills into it"
+    for skill in "${SKILLS[@]}"; do
+      rm -rf "${link:?}/$skill"
+      cp -R "$DST/$skill" "$link/$skill"
+    done
+  else
+    mkdir -p "$ROOT/.$client"
+    ln -s ../.agents/skills "$link"
+    echo "linked .$client/skills -> .agents/skills"
+  fi
 done
