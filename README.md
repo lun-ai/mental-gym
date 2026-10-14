@@ -13,8 +13,7 @@ Progress lives in [`CHECKLIST.md`](CHECKLIST.md). Blog post: TBD.
 ## Getting started
 
 Open this repo in Claude Code. Nothing to install by hand: `CLAUDE.md` tells
-the agent to install the gym skills from
-[lun-ai/skills](https://github.com/lun-ai/skills) if they are missing, generate
+the agent to install the [gym skills](https://github.com/lun-ai/skills) if they are missing, generate
 `CHECKLIST.md` if it is still the stub, and then start coaching. A good first
 message:
 
@@ -52,10 +51,6 @@ outputs/      generated artifacts (gitignored)
 scripts/      install-skills.sh (global install), sync-skill.sh (vendor copy)
 docs/         diagrams (.excalidraw sources and rendered .png)
 ```
-
-The diagrams are editable at [excalidraw.com](https://excalidraw.com): open the
-`.excalidraw` file in `docs/diagrams/`, or regenerate with the
-`excalidraw-diagram` skill.
 
 ## Python setup
 
