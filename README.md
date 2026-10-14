@@ -12,19 +12,22 @@ Progress lives in [`CHECKLIST.md`](CHECKLIST.md). Blog post: TBD.
 
 ## Getting started
 
-Open this repo in Claude Code. Nothing to install by hand: `CLAUDE.md` tells
-the agent to install the [gym skills](https://github.com/lun-ai/skills) if they are missing, generate
-`CHECKLIST.md` if it is still the stub, and then start coaching. A good first
-message:
+Open this repo in your coding agent: Claude Code, Codex, Gemini CLI, or any
+other that reads `AGENTS.md`. Nothing to install by hand. `AGENTS.md` tells
+the agent to install the gym skills from
+[lun-ai/skills](https://github.com/lun-ai/skills) into this repo if they are
+missing, generate `CHECKLIST.md` if it is still the stub, and then start
+coaching. A good first message:
 
 ```text
 Set up the gym.
 ```
 
-Under the hood the agent runs `scripts/install-skills.sh`, which puts
-`AI-mental-gym` and `AI-mental-gym-checklist` into `~/.claude/skills`. You can
-run it yourself too. To freeze a copy inside this repo for sharing, run
-`scripts/sync-skill.sh` afterwards.
+Under the hood the agent runs `scripts/install-skills.sh`, which copies
+`AI-mental-gym` and `AI-mental-gym-checklist` into `.agents/skills/`, the
+cross-agent skills directory, and symlinks `.claude/skills` and
+`.gemini/skills` to it. The copy is tracked in git, so anyone who clones the
+repo gets the skills with it. Re-run the script to refresh them.
 
 ## How the gym works
 
@@ -42,14 +45,16 @@ correct. The last item of a phase also triggers that phase's depth checkpoint.
 ![Repo layout](docs/diagrams/repo-layout.png)
 
 ```
-CLAUDE.md     agent instructions: install skills, generate checklist, coach
-CHECKLIST.md  phases, items and depth checkpoints
-src/TOPIC/    the code you write
-tests/        unit tests per checklist item
-data/         datasets (gitignored)
-outputs/      generated artifacts (gitignored)
-scripts/      install-skills.sh (global install), sync-skill.sh (vendor copy)
-docs/         diagrams (.excalidraw sources and rendered .png)
+AGENTS.md        agent instructions: install skills, generate checklist, coach
+CLAUDE.md        points Claude Code at AGENTS.md (GEMINI.md does the same)
+.agents/skills/  the gym skills, installed by the agent, usable by any agent
+CHECKLIST.md     phases, items and depth checkpoints
+src/TOPIC/       the code you write
+tests/           unit tests per checklist item
+data/            datasets (gitignored)
+outputs/         generated artifacts (gitignored)
+scripts/         install-skills.sh
+docs/            diagrams (.excalidraw sources and rendered .png)
 ```
 
 ## Python setup
@@ -63,8 +68,8 @@ uv run pytest
 
 1. Create the repo from this template as `mental-gym-<topic>`.
 2. Rename `src/topic/` to `src/<topic>/` and set `name` and `packages` in `pyproject.toml`.
-3. Open the repo in Claude Code and say "Set up the gym". The agent installs
-   the skills, generates `CHECKLIST.md`, and rewrites this README for the
-   actual topic.
+3. Open the repo in your coding agent and say "Set up the gym". The agent
+   installs the skills into `.agents/skills/`, generates `CHECKLIST.md`, and
+   rewrites this README for the actual topic. Commit the installed skills.
 4. Fill in the reference implementation link if the skill could not infer it.
 5. Delete this section.
