@@ -1,4 +1,4 @@
-# mental-gym-TOPIC
+# mental-gym
 
 > **Template placeholder.** This README describes the template, not a gym.
 > When the gym session starts, replace it with the actual topic: what is being
@@ -66,7 +66,7 @@ uv run pytest
 
 ## Starting a new gym from this template
 
-1. Create the repo from this template as `mental-gym-<topic>`.
+1. Create a repo from this template on GitHub ("Use this template").
 2. Rename `src/topic/` to `src/<topic>/` and set `name` and `packages` in `pyproject.toml`.
 3. Open the repo in your coding agent and say "Set up the gym". The agent
    installs the skills into `.agents/skills/`, generates `CHECKLIST.md`, and

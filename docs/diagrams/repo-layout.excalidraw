@@ -22,10 +22,10 @@
    "id": "title",
    "x": 40,
    "y": 30,
-   "text": "mental-gym-<topic>/",
+   "text": "mental-gym/",
    "fontSize": 28,
    "strokeColor": "#1e40af",
-   "originalText": "mental-gym-<topic>/",
+   "originalText": "mental-gym/",
    "fontFamily": 3,
    "lineHeight": 1.25,
    "textAlign": "left",
@@ -33,7 +33,7 @@
    "backgroundColor": "transparent",
    "containerId": null,
    "height": 35.0,
-   "width": 319.2
+   "width": 184.79999999999998
   },
   {
    "fillStyle": "solid",
