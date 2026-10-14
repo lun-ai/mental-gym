@@ -10,46 +10,27 @@ Reference implementation: TBD.
 
 Progress lives in [`CHECKLIST.md`](CHECKLIST.md). Blog post: TBD.
 
-## Setting up the mental gym skill
+## Getting started
 
-The gym is driven by two Claude Code skills from
-[lun-ai/skills](https://github.com/lun-ai/skills): `AI-mental-gym` runs the
-reps and `AI-mental-gym-checklist` generates `CHECKLIST.md`.
-
-**Option A: install globally (recommended).** Every repo you open in Claude
-Code can use them.
-
-```bash
-git clone https://github.com/lun-ai/skills.git "$HOME/.claude/skills"
-```
-
-If `~/.claude/skills` already exists, clone elsewhere and copy the two skill
-directories in:
-
-```bash
-git clone https://github.com/lun-ai/skills.git /tmp/skills
-cp -R /tmp/skills/AI-mental-gym /tmp/skills/AI-mental-gym-checklist "$HOME/.claude/skills/"
-```
-
-**Option B: vendor into this repo.** Freezes a copy under `.claude/skills/`
-so the repo is self-contained when shared. It copies from your global install,
-so do Option A first. Re-run to refresh.
-
-```bash
-scripts/sync-skill.sh
-```
-
-**Check it worked.** Open this repo in Claude Code and type `/`. Both skills
-should appear in the list. Then start:
+Open this repo in Claude Code. Nothing to install by hand: `CLAUDE.md` tells
+the agent to install the gym skills from
+[lun-ai/skills](https://github.com/lun-ai/skills) if they are missing, generate
+`CHECKLIST.md` if it is still the stub, and then start coaching. A good first
+message:
 
 ```text
-Use the AI-mental-gym-checklist skill to create the checklist for this gym.
+Set up the gym.
 ```
+
+Under the hood the agent runs `scripts/install-skills.sh`, which puts
+`AI-mental-gym` and `AI-mental-gym-checklist` into `~/.claude/skills`. You can
+run it yourself too. To freeze a copy inside this repo for sharing, run
+`scripts/sync-skill.sh` afterwards.
 
 ## How the gym works
 
-Open this repo in Claude Code and say which checklist item you are on. The
-skill coaches one item at a time without writing the solution for you.
+Say which checklist item you are on. The skill coaches one item at a time
+without writing the solution for you.
 
 ![One rep per checklist item](docs/diagrams/gym-loop.png)
 
@@ -62,11 +43,13 @@ correct. The last item of a phase also triggers that phase's depth checkpoint.
 ![Repo layout](docs/diagrams/repo-layout.png)
 
 ```
+CLAUDE.md     agent instructions: install skills, generate checklist, coach
+CHECKLIST.md  phases, items and depth checkpoints
 src/TOPIC/    the code you write
 tests/        unit tests per checklist item
 data/         datasets (gitignored)
 outputs/      generated artifacts (gitignored)
-CHECKLIST.md  phases, items and depth checkpoints
+scripts/      install-skills.sh (global install), sync-skill.sh (vendor copy)
 docs/         diagrams (.excalidraw sources and rendered .png)
 ```
 
@@ -85,8 +68,8 @@ uv run pytest
 
 1. Create the repo from this template as `mental-gym-<topic>`.
 2. Rename `src/topic/` to `src/<topic>/` and set `name` and `packages` in `pyproject.toml`.
-3. Install the skills (see "Setting up the mental gym skill" above).
-4. Open the repo in Claude Code and run the `AI-mental-gym-checklist` skill. It
-   generates `CHECKLIST.md` and rewrites this README for the actual topic.
-5. Fill in the reference implementation link if the skill could not infer it.
-6. Delete this section.
+3. Open the repo in Claude Code and say "Set up the gym". The agent installs
+   the skills, generates `CHECKLIST.md`, and rewrites this README for the
+   actual topic.
+4. Fill in the reference implementation link if the skill could not infer it.
+5. Delete this section.
