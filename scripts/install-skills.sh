@@ -45,3 +45,18 @@ for client in claude gemini; do
     echo "linked .$client/skills -> .agents/skills"
   fi
 done
+
+# Tag the GitHub repo with the `mental-gym` topic so every gym shows up under
+# github.com/topics/mental-gym and the profile filter `topic:mental-gym`.
+# Best effort: skipped when gh is missing, not logged in, or there is no remote.
+TOPIC="mental-gym"
+if command -v gh >/dev/null 2>&1 && gh auth status >/dev/null 2>&1 \
+   && git -C "$ROOT" remote get-url origin >/dev/null 2>&1; then
+  if gh repo edit --add-topic "$TOPIC" >/dev/null 2>&1; then
+    echo "tagged GitHub repo with topic '$TOPIC'"
+  else
+    echo "note: could not add GitHub topic '$TOPIC' (no push access?); skipping"
+  fi
+else
+  echo "note: gh unavailable or no origin remote; skipping GitHub topic '$TOPIC'"
+fi

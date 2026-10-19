@@ -12,8 +12,9 @@ CLI, and others that follow the Agent Skills convention) sees the same copy.
 1. **Make sure the skills are installed.** If `.agents/skills/AI-mental-gym/SKILL.md`
    does not exist, run `scripts/install-skills.sh`. It copies both skills from
    https://github.com/lun-ai/skills into `.agents/skills/` and symlinks
-   `.claude/skills` and `.gemini/skills` to it. Re-run it any time to refresh.
-   Tell the user in one line; do not ask first.
+   `.claude/skills` and `.gemini/skills` to it, and tags the GitHub repo with
+   the `mental-gym` topic so all gyms are grouped on GitHub. Re-run it any
+   time to refresh. Tell the user in one line; do not ask first.
 2. **Load the skills.** If your harness lists them, use them as skills. If it
    does not, read `.agents/skills/<name>/SKILL.md` directly and follow it as
    instructions; that is all a skill is.

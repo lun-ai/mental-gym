@@ -29,6 +29,11 @@ cross-agent skills directory, and symlinks `.claude/skills` and
 `.gemini/skills` to it. The copy is tracked in git, so anyone who clones the
 repo gets the skills with it. Re-run the script to refresh them.
 
+The same script tags the GitHub repo with the `mental-gym` topic (best
+effort, needs `gh` logged in), so all gyms are grouped at
+[github.com/topics/mental-gym](https://github.com/topics/mental-gym) and under
+`topic:mental-gym` on the profile's repository filter.
+
 ## How the gym works
 
 Say which checklist item you are on. The skill coaches one item at a time
